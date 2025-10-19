@@ -1,0 +1,27 @@
+school_name: "Govt. High School, Amritsar"
+expected_questions: 108
+grading_scheme: "weighted"  # options: "standard", "weighted"
+export_filename: "class10_results.xlsx"
+
+subject_weights:
+  Punjabi: 1.0
+  Science: 1.5
+  Mathematics: 1.5
+  Social Science: 1.0
+  English: 1.0
+  Hindi: 1.0
+
+grid:
+  start_x: 80
+  start_y: 180
+  dx: 38
+  dy: 28
+  rows: 54
+  cols: 2
+
+bubble_detection:
+  min_radius: 5
+  max_radius: 25
+  radius_tolerance: 25
+
+metadata_blocks: {}  # Define bubble positions for UDISE, DOB, etc. if using bubble-based metadata

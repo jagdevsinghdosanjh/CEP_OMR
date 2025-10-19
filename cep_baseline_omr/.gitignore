@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Environment
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Excel exports
+data/exports/*.xlsx
+
+# Debug images
+*.png
+*.jpg
+*.jpeg
+
+# Streamlit cache
+.streamlit/
+
+# Logs
+*.log
+omr_debug.log
