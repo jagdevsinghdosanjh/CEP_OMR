@@ -1,3 +1,5 @@
+import cv2
+
 def generate_question_grid(start_x, start_y, dx, dy, rows, cols):
     """
     Generates a grid of question bubble centers.

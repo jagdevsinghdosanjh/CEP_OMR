@@ -1,5 +1,5 @@
 import cv2
-import numpy as np
+import numpy as np # noqa
 
 def detect_bubbles(img, min_radius=5, max_radius=25):
     """
