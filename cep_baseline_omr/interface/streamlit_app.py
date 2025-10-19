@@ -1,6 +1,7 @@
 import streamlit as st
 import cv2
 import numpy as np
+import json
 
 from core.bubble_scanner import detect_bubbles
 from core.grid_mapper import generate_question_grid, draw_grid_overlay
@@ -9,7 +10,7 @@ from core.response_mapper import map_bubbles_to_responses
 from core.answer_evaluator import evaluate_responses
 from core.excel_writer import write_student_to_excel
 from core.feedback_generator import generate_poetic_feedback, display_badge
-from interface.dashboard import display_class_dashboard, export_summary
+from interface.dashboard import display_class_dashboard
 
 # Page setup
 st.set_page_config(page_title="CEP Baseline OMR Processor", layout="wide")
@@ -23,9 +24,12 @@ with st.sidebar:
     export_excel = st.checkbox("📤 Export to Excel")
 
 # Load answer key
-import json
 if answer_key_file:
-    answer_key = json.load(answer_key_file)
+    try:
+        answer_key = json.load(answer_key_file)
+    except Exception:
+        st.error("❌ Failed to load answer_key.json. Please check the file format.")
+        st.stop()
 else:
     st.warning("Please upload answer_key.json")
     answer_key = {"flat": {}, "subject_map": {}}
@@ -34,6 +38,10 @@ else:
 if uploaded_file:
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+
+    if img is None:
+        st.error("❌ Failed to decode image. Please upload a valid PNG or JPG file.")
+        st.stop()
 
     bubbles = detect_bubbles(img)
 
@@ -69,7 +77,11 @@ if uploaded_file:
             "answer_key": answer_key["flat"],
             "subject_scores": evaluation["subject_scores"]
         }
-        write_student_to_excel(student_data, "data/CEP Baseline Recording Sheet 9th 10th.xlsx", "data/exports/class10_results.xlsx")
+        write_student_to_excel(
+            student_data,
+            "data/CEP Baseline Recording Sheet 9th 10th.xlsx",
+            "data/exports/class10_results.xlsx"
+        )
         st.success("✅ Results written to Excel")
 
     # Dashboard
@@ -79,3 +91,5 @@ if uploaded_file:
         "Score": evaluation["score"],
         "subject_scores": evaluation["subject_scores"]
     }])
+else:
+    st.info("📥 Please upload a scanned OMR sheet to begin.")
